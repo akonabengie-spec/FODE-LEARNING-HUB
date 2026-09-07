@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#238636"
+    >
+
+    <title>
+        Scientific Calculator - FODE Offline Learning Hub
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           FODE SCIENTIFIC CALCULATOR
+           WIDER + SHORTER VERSION
+        ===================================================== */
+
+        .calculator-page {
+
+            min-height: calc(100vh - 70px);
+
+            background: #eef1f3;
+
+            padding: 25px 15px 40px;
+
+        }
+
+
+        /* =====================================================
+           CALCULATOR CONTAINER
+        ===================================================== */
+
+        .calculator-container {
+
+            width: 100%;
+
+            max-width: 700px;
+
+            margin: 0 auto;
+
+        }
+
+
+        /* =====================================================
+           PAGE TITLE
+        ===================================================== */
+
+        .calculator-title {
+
+            text-align: center;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .calculator-title h1 {
+
+            margin: 0;
+
+            font-size: 28px;
+
+            color: #1f2937;
+
+        }
+
+
+        .calculator-title p {
+
+            margin: 5px 0 0;
+
+            color: #667085;
+
+        }
+
+
+        /* =====================================================
+           CALCULATOR BODY
+        ===================================================== */
+
+        .scientific-calculator {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            background: #252525;
+
+            border-radius: 24px;
+
+            padding: 15px 20px;
+
+            box-shadow:
+
+                0 15px 35px rgba(0, 0, 0, 0.25),
+
+                inset 0 1px 2px
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .calculator-brand {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 2px 5px 7px;
+
+        }
+
+
+        .calculator-brand .casio-style {
+
+            color: #eeeeee;
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .calculator-brand .model {
+
+            color: #bbbbbb;
+
+            font-size: 13px;
+
+        }
+
+
+        .calculator-model {
+
+            text-align: center;
+
+            color: #dddddd;
+
+            font-weight: 700;
+
+            font-size: 15px;
+
+            margin-bottom: 8px;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        /* =====================================================
+           DISPLAY
+        ===================================================== */
+
+        .calculator-display {
+
+            background: #d9e2c4;
+
+            border: 6px solid #111111;
+
+            border-radius: 9px;
+
+            min-height: 78px;
+
+            padding: 8px 12px;
+
+            box-sizing: border-box;
+
+            box-shadow:
+
+                inset 0 2px 7px
+                rgba(0,0,0,0.25);
+
+            margin-bottom: 10px;
+
+            overflow: hidden;
+
+        }
+
+
+        .display-status {
+
+            height: 16px;
+
+            color: #27311e;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            display: flex;
+
+            gap: 12px;
+
+        }
+
+
+        .display-expression {
+
+            min-height: 21px;
+
+            text-align: right;
+
+            font-family:
+                "Courier New",
+                monospace;
+
+            font-size: 15px;
+
+            color: #1c2518;
+
+            overflow-x: auto;
+
+            white-space: nowrap;
+
+        }
+
+
+        .display-result {
+
+            text-align: right;
+
+            font-family:
+                "Courier New",
+                monospace;
+
+            font-size: 26px;
+
+            font-weight: bold;
+
+            color: #10160e;
+
+            overflow-x: auto;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =====================================================
+           MODE BUTTONS
+        ===================================================== */
+
+        .mode-panel {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            margin: 8px 0;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .mode-btn {
+
+            padding: 6px 13px;
+
+            border: 1px solid #777;
+
+            border-radius: 6px;
+
+            background: #303030;
+
+            color: #ddd;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+        }
+
+
+        .mode-btn.active {
+
+            background: #238636;
+
+            color: white;
+
+            border-color: #238636;
+
+        }
+
+
+        /* =====================================================
+           TOP CONTROLS
+        ===================================================== */
+
+        .top-controls {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 6px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        /* =====================================================
+           CALCULATOR KEYBOARD
+        ===================================================== */
+
+        .calculator-keyboard {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 6px;
+
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .calc-btn {
+
+            min-height: 41px;
+
+            border: 1px solid #111;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    #444,
+                    #292929
+                );
+
+            color: #f4f4f4;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+
+                0 2px 0 #111,
+
+                inset 0 1px 1px
+                rgba(255,255,255,0.08);
+
+            position: relative;
+
+            user-select: none;
+
+        }
+
+
+        .calc-btn:hover {
+
+            background:
+                linear-gradient(
+                    #505050,
+                    #303030
+                );
+
+        }
+
+
+        .calc-btn:active {
+
+            transform:
+                translateY(2px);
+
+            box-shadow:
+
+                0 1px 0 #111;
+
+        }
+
+
+        /* =====================================================
+           SPECIAL FUNCTION LABELS
+        ===================================================== */
+
+        .calc-btn .shift-label {
+
+            position: absolute;
+
+            top: -11px;
+
+            left: 4px;
+
+            color: #e3b341;
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+        }
+
+
+        .calc-btn .alpha-label {
+
+            position: absolute;
+
+            top: -11px;
+
+            right: 4px;
+
+            color: #e47aa2;
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================================
+           FUNCTION BUTTONS
+        ===================================================== */
+
+        .function-btn {
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           NAVIGATION BUTTONS
+        ===================================================== */
+
+        .nav-btn {
+
+            background: #303030;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           OPERATORS
+        ===================================================== */
+
+        .operator-btn {
+
+            font-size: 19px;
+
+        }
+
+
+        /* =====================================================
+           AC
+        ===================================================== */
+
+        .ac-btn {
+
+            color: #ff7aa2;
+
+            font-size: 16px;
+
+        }
+
+
+        /* =====================================================
+           DELETE
+        ===================================================== */
+
+        .delete-btn {
+
+            color: #ff7aa2;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           EQUALS
+        ===================================================== */
+
+        .equals-btn {
+
+            background: #3d3d3d;
+
+            font-size: 19px;
+
+        }
+
+
+        /* =====================================================
+           SHIFT ACTIVE
+        ===================================================== */
+
+        .shift-active {
+
+            background:
+                #9b6b00 !important;
+
+            color: white !important;
+
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        .calculator-back {
+
+            display: block;
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 11px;
+
+            border-radius: 9px;
+
+            background: #238636;
+
+            color: white;
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            box-sizing: border-box;
+
+        }
+
+
+        .calculator-back:hover {
+
+            background: #1d7130;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .calculator-page {
+
+                padding:
+                    18px
+                    8px
+                    30px;
+
+            }
+
+
+            .calculator-container {
+
+                max-width: 100%;
+
+            }
+
+
+            .scientific-calculator {
+
+                padding:
+                    13px;
+
+                border-radius: 20px;
+
+            }
+
+
+            .calculator-title h1 {
+
+                font-size: 24px;
+
+            }
+
+
+            .calc-btn {
+
+                min-height: 40px;
+
+                font-size: 13px;
+
+            }
+
+
+            .function-btn {
+
+                font-size: 12px;
+
+            }
+
+
+            .calculator-display {
+
+                min-height: 75px;
+
+            }
+
+
+            .display-result {
+
+                font-size: 24px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL PHONES
+        ===================================================== */
+
+        @media (max-width: 480px) {
+
+            .calculator-page {
+
+                padding:
+                    15px
+                    5px
+                    25px;
+
+            }
+
+
+            .scientific-calculator {
+
+                padding: 10px;
+
+                border-radius: 18px;
+
+            }
+
+
+            .calculator-title {
+
+                margin-bottom: 12px;
+
+            }
+
+
+            .calculator-title h1 {
+
+                font-size: 21px;
+
+            }
+
+
+            .calculator-title p {
+
+                font-size: 13px;
+
+            }
+
+
+            .calculator-brand {
+
+                padding:
+                    2px
+                    3px
+                    5px;
+
+            }
+
+
+            .calculator-brand
+            .casio-style {
+
+                font-size: 18px;
+
+            }
+
+
+            .calculator-brand
+            .model {
+
+                font-size: 11px;
+
+            }
+
+
+            .calculator-model {
+
+                font-size: 12px;
+
+                margin-bottom: 6px;
+
+            }
+
+
+            .calculator-display {
+
+                min-height: 70px;
+
+                border-width: 5px;
+
+                padding:
+                    7px
+                    9px;
+
+                margin-bottom: 8px;
+
+            }
+
+
+            .display-status {
+
+                height: 14px;
+
+                font-size: 9px;
+
+            }
+
+
+            .display-expression {
+
+                font-size: 13px;
+
+                min-height: 18px;
+
+            }
+
+
+            .display-result {
+
+                font-size: 21px;
+
+            }
+
+
+            .mode-panel {
+
+                gap: 5px;
+
+                margin: 6px 0;
+
+            }
+
+
+            .mode-btn {
+
+                padding:
+                    5px
+                    10px;
+
+                font-size: 10px;
+
+            }
+
+
+            .top-controls {
+
+                gap: 5px;
+
+                margin-bottom: 6px;
+
+            }
+
+
+            .calculator-keyboard {
+
+                gap: 5px;
+
+            }
+
+
+            .calc-btn {
+
+                min-height: 37px;
+
+                border-radius: 7px;
+
+                font-size: 12px;
+
+            }
+
+
+            .function-btn {
+
+                font-size: 10px;
+
+            }
+
+
+            .operator-btn {
+
+                font-size: 16px;
+
+            }
+
+
+            .ac-btn {
+
+                font-size: 14px;
+
+            }
+
+
+            .delete-btn {
+
+                font-size: 12px;
+
+            }
+
+
+            .equals-btn {
+
+                font-size: 17px;
+
+            }
+
+
+            .calculator-back {
+
+                margin-top: 12px;
+
+                padding: 10px;
+
+                font-size: 13px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <img
+                    src="images/logo.png"
+                    alt="FODE Logo"
+                >
+
+                <span>
+                    FODE Offline Learning Hub
+                </span>
+
+            </a>
+
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Open menu"
+                type="button"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="calculator-page">
+
+
+        <div class="calculator-container">
+
+
+            <!-- =================================================
+                 PAGE TITLE
+            ================================================== -->
+
+            <div class="calculator-title">
+
+                <h1>
+                    Scientific Calculator
+                </h1>
+
+                <p>
+                    FODE Offline Learning Hub
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CALCULATOR
+            ================================================== -->
+
+            <section class="scientific-calculator">
+
+
+                <!-- =================================================
+                     BRAND
+                ================================================== -->
+
+                <div class="calculator-brand">
+
+                    <span class="casio-style">
+                        CASIO
+                    </span>
+
+                    <span class="model">
+                        fx-100MS
+                    </span>
+
+                </div>
+
+
+                <div class="calculator-model">
+                    S-V.P.A.M. &nbsp; 2nd edition
+                </div>
+
+
+
+                <!-- =================================================
+                     DISPLAY
+                ================================================== -->
+
+                <div
+                    class="calculator-display"
+                    id="calculatorDisplay"
+                >
+
+                    <div
+                        class="display-status"
+                        id="displayStatus"
+                    >
+
+                        <span id="shiftIndicator"></span>
+
+                        <span id="angleIndicator">
+                            DEG
+                        </span>
+
+                        <span id="memoryIndicator"></span>
+
+                    </div>
+
+
+                    <div
+                        class="display-expression"
+                        id="displayExpression"
+                    >
+                        0
+                    </div>
+
+
+                    <div
+                        class="display-result"
+                        id="displayResult"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     MODE
+                ================================================== -->
+
+                <div class="mode-panel">
+
+                    <button
+                        class="mode-btn active"
+                        id="degreeBtn"
+                        type="button"
+                    >
+                        DEG
+                    </button>
+
+
+                    <button
+                        class="mode-btn"
+                        id="radianBtn"
+                        type="button"
+                    >
+                        RAD
+                    </button>
+
+
+                    <button
+                        class="mode-btn"
+                        id="gradianBtn"
+                        type="button"
+                    >
+                        GRAD
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TOP CONTROLS
+                ================================================== -->
+
+                <div class="top-controls">
+
+
+                    <button
+                        class="calc-btn nav-btn"
+                        id="shiftBtn"
+                        type="button"
+                    >
+                        SHIFT
+                    </button>
+
+
+                    <button
+                        class="calc-btn nav-btn"
+                        id="alphaBtn"
+                        type="button"
+                    >
+                        ALPHA
+                    </button>
+
+
+                    <button
+                        class="calc-btn nav-btn"
+                        id="modeBtn"
+                        type="button"
+                    >
+                        MODE
+                    </button>
+
+
+                    <button
+                        class="calc-btn nav-btn"
+                        id="onBtn"
+                        type="button"
+                    >
+                        ON
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     KEYBOARD
+                ================================================== -->
+
+                <div class="calculator-keyboard">
+
+
+                    <!-- ROW 1 -->
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="power3"
+                    >
+                        x³
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="power2"
+                    >
+                        x²
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="sqrt"
+                    >
+                        √
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="log"
+                    >
+                        log
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="ln"
+                    >
+                        ln
+                    </button>
+
+
+
+                    <!-- ROW 2 -->
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="inverse"
+                    >
+                        x⁻¹
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="sin"
+                    >
+                        sin
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="cos"
+                    >
+                        cos
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="tan"
+                    >
+                        tan
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="exp"
+                    >
+                        EXP
+                    </button>
+
+
+
+                    <!-- ROW 3 -->
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="fraction"
+                    >
+                        a/b
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="pi"
+                    >
+                        π
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="("
+                    >
+                        (
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value=")"
+                    >
+                        )
+                    </button>
+
+
+                    <button
+                        class="calc-btn delete-btn"
+                        id="deleteBtn"
+                    >
+                        DEL
+                    </button>
+
+
+
+                    <!-- ROW 4 -->
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="abs"
+                    >
+                        |x|
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="ans"
+                    >
+                        Ans
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="7"
+                    >
+                        7
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="8"
+                    >
+                        8
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="9"
+                    >
+                        9
+                    </button>
+
+
+
+                    <!-- ROW 5 -->
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="negate"
+                    >
+                        (−)
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="eng"
+                    >
+                        ENG
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="4"
+                    >
+                        4
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="5"
+                    >
+                        5
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="6"
+                    >
+                        6
+                    </button>
+
+
+
+                    <!-- ROW 6 -->
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="memoryRecall"
+                    >
+                        RCL
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="memoryStore"
+                    >
+                        STO
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="1"
+                    >
+                        1
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="2"
+                    >
+                        2
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="3"
+                    >
+                        3
+                    </button>
+
+
+
+                    <!-- ROW 7 -->
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="mplus"
+                    >
+                        M+
+                    </button>
+
+
+                    <button
+                        class="calc-btn function-btn"
+                        data-action="mminus"
+                    >
+                        M−
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="0"
+                    >
+                        0
+                    </button>
+
+
+                    <button
+                        class="calc-btn"
+                        data-value="."
+                    >
+                        .
+                    </button>
+
+
+                    <button
+                        class="calc-btn operator-btn"
+                        data-value="÷"
+                    >
+                        ÷
+                    </button>
+
+
+
+                    <!-- ROW 8 -->
+
+                    <button
+                        class="calc-btn ac-btn"
+                        id="clearBtn"
+                    >
+                        AC
+                    </button>
+
+
+                    <button
+                        class="calc-btn operator-btn"
+                        data-value="×"
+                    >
+                        ×
+                    </button>
+
+
+                    <button
+                        class="calc-btn operator-btn"
+                        data-value="−"
+                    >
+                        −
+                    </button>
+
+
+                    <button
+                        class="calc-btn operator-btn"
+                        data-value="+"
+                    >
+                        +
+                    </button>
+
+
+                    <button
+                        class="calc-btn equals-btn"
+                        id="equalsBtn"
+                    >
+                        =
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BACK TO TOOLS
+            ================================================== -->
+
+            <a
+                href="tools.html"
+                class="calculator-back"
+            >
+                ← Back to Tools
+            </a>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/calculator.js"></script>
+
+    <script src="js/script.js"></script>
+
+
+</body>
+
+</html>
